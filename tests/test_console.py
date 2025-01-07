@@ -10,6 +10,7 @@ from models import storage
 from io import StringIO
 from unittest.mock import patch
 
+
 class TestConsole(unittest.TestCase):
     """Test class for the HBNBCommand class
     """
@@ -21,10 +22,10 @@ class TestConsole(unittest.TestCase):
         """
         cli = HBNBCommand()
         dbcn = MySQLdb.connect(
-            host = os.getenv('HBNB_MYSQL_HOST'),
-            user = os.getenv('HBNB_MYSQL_USER'),
-            passwd = os.getenv('HBNB_MYSQL_PWD'), 
-            db = os.getenv('HBNB_MYSQL_DB')
+            host=os.getenv('HBNB_MYSQL_HOST'),
+            user=os.getenv('HBNB_MYSQL_USER'),
+            passwd=os.getenv('HBNB_MYSQL_PWD'),
+            db=os.getenv('HBNB_MYSQL_DB')
         )
 
         cursor = dbcn.cursor()
@@ -33,7 +34,7 @@ class TestConsole(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as res:
             cli.onecmd('Create State.name="Carlifornia"')
-        
+
         cursor.execute("SELECT COUNT(*) FROM states")
         new_count = cursor.fetchone()[0]
 
