@@ -15,6 +15,20 @@ class TestConsole(unittest.TestCase):
     """Test class for the HBNBCommand class
     """
     @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "Test only for file storage"
+    )
+    def test_do_create_fs(self):
+        """Test object creation using file storage
+        """
+        cli = HBNBCommand()
+        with patch('sys.stdout', new=StringIO()) as res:
+                cli.onecmd('create State name="Carlifornia"')
+                state_id = res.getvalue().strip()
+        state = storage.all()["State.{}".format(state_id)]
+        self.assertEqual(state.name, "Carlifornia")
+
+    @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') != 'db',
         "Test only for database storage")
     def test_create_state(self):
@@ -33,8 +47,8 @@ class TestConsole(unittest.TestCase):
         initial_count = cursor.fetchone()[0]
 
         with patch('sys.stdout', new=StringIO()) as res:
-            cli.onecmd('Create State.name="Carlifornia"')
-
+            cli.onecmd('create State.name="Carlifornia"')
+        
         cursor.execute("SELECT COUNT(*) FROM states")
         new_count = cursor.fetchone()[0]
 
