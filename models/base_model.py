@@ -4,13 +4,13 @@ import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, DateTime, String
-from models import storage
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
-    
+
     id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now())
     updated_at = Column(DateTime, nullable=False, default=datetime.now())
@@ -20,14 +20,14 @@ class BaseModel:
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-        
+
         if kwargs:
             for key, val in kwargs.items():
                 if key == 'created_at' or key == 'updated_at':
-                    val= datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
+                    val = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
                     if key != '__class__' and hasattr(self.__class__, key):
                         setattr(self, key, val)
-   
+
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]

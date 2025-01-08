@@ -151,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance = eval(class_name)()
         else:
             new_instance = eval(class_name)(**kwargs)
-            
+
         storage.new(new_instance)
         print(new_instance.id)
         storage.save()
