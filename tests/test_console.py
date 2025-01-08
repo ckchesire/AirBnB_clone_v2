@@ -23,8 +23,8 @@ class TestConsole(unittest.TestCase):
         """
         cli = HBNBCommand()
         with patch('sys.stdout', new=StringIO()) as res:
-                cli.onecmd('create State name="Carlifornia"')
-                state_id = res.getvalue().strip()
+            cli.onecmd('create State name="Carlifornia"')
+            state_id = res.getvalue().strip()
         state = storage.all()["State.{}".format(state_id)]
         self.assertEqual(state.name, "Carlifornia")
 
@@ -48,7 +48,7 @@ class TestConsole(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as res:
             cli.onecmd('create State.name="Carlifornia"')
-        
+
         cursor.execute("SELECT COUNT(*) FROM states")
         new_count = cursor.fetchone()[0]
 
