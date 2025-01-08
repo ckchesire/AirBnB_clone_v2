@@ -9,6 +9,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -20,7 +21,7 @@ class FileStorage:
         Args:
             cls(class, optional): Class to filter by, include only
             objects of the specified class.
-        
+
         Returns:
             Dictionary of objects of specified class, or all objects if
             class is unspecified
@@ -62,7 +63,7 @@ class FileStorage:
                     self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-    
+
     def delete(self, obj=None):
         """Delete obj from __objects if it's inside
 
@@ -78,4 +79,3 @@ class FileStorage:
             pass
         except KeyboardInterrupt:
             pass
-
