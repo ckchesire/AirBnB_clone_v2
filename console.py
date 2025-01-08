@@ -147,8 +147,7 @@ class HBNBCommand(cmd.Cmd):
                 except Exception:
                     print(f"** couldn't evaluate {value}")
                     pass
-            kwargs[key] = value
-        
+
         if hasattr(new_instance, key):
             setattr(new_instance, key, value)
 
