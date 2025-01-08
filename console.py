@@ -124,9 +124,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         param_list = args.split(" ")
-
-        new_instance = eval(class_name)()
-
+        kwargs = {}
         for param in range(1, len(param_list)):
             key, value = tuple(param_list[param].split("="))
             if value.startswith('"') and value.endswith('"'):
@@ -147,10 +145,13 @@ class HBNBCommand(cmd.Cmd):
                 except Exception:
                     print(f"** couldn't evaluate {value}")
                     pass
+            kwargs[key] = value
 
-        if hasattr(new_instance, key):
-            setattr(new_instance, key, value)
-
+        if kwargs == {}:
+            new_instance = eval(class_name)()
+        else:
+            new_instance = eval(class_name)(**kwargs)
+            
         storage.new(new_instance)
         print(new_instance.id)
         storage.save()
