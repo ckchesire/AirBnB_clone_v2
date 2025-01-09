@@ -25,7 +25,7 @@ class DBStorage:
         username = os.getenv('HBNB_MYSQL_USER')
         password = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST')
-        db_name = os.getenv('HBNB_MYSQL_DB') 
+        db_name = os.getenv('HBNB_MYSQL_DB')
 
         db_conn = "mysql+mysqldb://{}:{}@{}:3306/{}".format(username,
                                                             password,
@@ -38,11 +38,11 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Method to query current db session for all objects matching 
+        """Method to query current db session for all objects matching
            class name
 
            Return:
-               Dictionary objects for specified class name or all objects 
+               Dictionary objects for specified class name or all objects
         """
         all_objs = []
         if cls:
@@ -61,17 +61,17 @@ class DBStorage:
             key = "{}.{}".format(object.__class__.__name__, object.id)
             dict_objs[key] = object
         return dict_objs
-    
+
     def new(self, obj):
         """Method is used to add an object to the current db session
         """
         self.__session.add(obj)
-    
+
     def save(self):
         """Method used to commit transactions to the current db session
         """
         self.__session.commit()
-    
+
     def delete(self, obj=None):
         """Method used to delete an  object from the current db session if
            object is not None
@@ -79,7 +79,7 @@ class DBStorage:
         self.__session.delete(obj)
 
     def reload(self):
-        """Method to ensure our database schema is synchronized with the 
+        """Method to ensure our database schema is synchronized with the
            defined alchemy models, when providing a new database session
         """
         Base.metadata.create_all(self.__engine)

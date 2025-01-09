@@ -19,18 +19,21 @@ class BaseModel:
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-        
+
         if kwargs:
             for key, val in kwargs.items():
                 if key == 'created_at' or key == 'updated_at':
                     val = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
                 if key != '__class__' and hasattr(self.__class__, key):
                     setattr(self, key, val)
-   
+
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        d_copy = self.__dict__.copy()
+        if '_sa_instance_state' in d_copy:
+            del d_copy['_sa_instance_state']
+        return '[{}] ({}) {}'.format(cls, self.id, d_copy)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -47,9 +50,10 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        dictionary.pop('_sa_instance_state')
+        if '_sa_instance_state' in dictionary:
+            dictionary.pop('_sa_instance_state')
         return dictionary
-    
+
     def delete(self):
         """Method to delete the current instance from the storage"""
         from models import storage
