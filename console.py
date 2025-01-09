@@ -115,46 +115,50 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        class_name = args.split(" ")[0]
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+        try:
+            if not args:
+                print("** class name missing **")
+                return
+            class_name = args.split(" ")[0]
+            if class_name not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
 
-        param_list = args.split(" ")
-        kwargs = {}
-        for param in range(1, len(param_list)):
-            key, value = tuple(param_list[param].split("="))
-            if value.startswith('"') and value.endswith('"'):
-                value = value.strip('"').replace("_", " ").replace('\\"', '"')
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
-            elif value:
-                try:
-                    value = int(value)
-                except ValueError:
-                    continue
+            param_list = args.split(" ")
+            kwargs = {}
+            for param in range(1, len(param_list)):
+                key, value = tuple(param_list[param].split("="))
+                if value.startswith('"') and value.endswith('"'):
+                    value = value.strip('"').replace("_", " ").replace('\\"', '"')
+                elif '.' in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+                elif value:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+                else:
+                    try:
+                        value = eval(value)
+                    except Exception:
+                        print(f"** couldn't evaluate {value}")
+                        pass
+                kwargs[key] = value
+
+            if kwargs == {}:
+                new_instance = eval(class_name)()
             else:
-                try:
-                    value = eval(value)
-                except Exception:
-                    print(f"** couldn't evaluate {value}")
-                    pass
-            kwargs[key] = value
+                new_instance = eval(class_name)(**kwargs)
 
-        if kwargs == {}:
-            new_instance = eval(class_name)()
-        else:
-            new_instance = eval(class_name)(**kwargs)
-
-        storage.new(new_instance)
-        print(new_instance.id)
-        storage.save()
+            storage.new(new_instance)
+            print(new_instance.id)
+            storage.save()
+        except ValueError:
+            print(ValueError)
+            return
 
     def help_create(self):
         """ Help information for the create method """
