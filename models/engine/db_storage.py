@@ -67,7 +67,7 @@ class DBStorage:
         """
         self.__session.add(obj)
     
-    def save(self, obj):
+    def save(self):
         """Method used to commit transactions to the current db session
         """
         self.__session.commit()
