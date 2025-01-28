@@ -7,6 +7,7 @@ from fabric.api import put, run, env
 from os.path import exists
 env.hosts = ['34.204.101.197', '75.101.179.225']
 
+
 def do_deploy(archive_path):
     """Method distributes an archive to the web servers
     """
@@ -25,5 +26,5 @@ def do_deploy(archive_path):
         run('rm -rf /data/web_static/current')
         run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-    except:
+    except FileNotFoundError:
         return False
